@@ -8,20 +8,23 @@ export class FollowUpAgent {
     console.log(`Follow-up Agent processing case: ${emergencyCase.caseId}`);
 
     try {
-      // Generate plain language update
-      const languageUpdate = await generatePlainLanguageUpdate(
-        emergencyCase.status,
-        emergencyCase.assignedService,
-        emergencyCase.bookingDetails,
-        emergencyCase.language as "en" | "ur"
-      );
+      // Check if this case type needs immediate resolution or appointment booking
+      const shouldResolveImmediately = this.shouldResolveImmediately(emergencyCase);
+      
+      if (shouldResolveImmediately) {
+        await this.resolveImmediately(emergencyCase);
+        return;
+      }
+
+      // Generate context-aware update based on emergency type
+      const contextualUpdate = await this.generateContextualUpdate(emergencyCase);
 
       // Create follow-up update
       await storage.createCaseUpdate({
         caseId: emergencyCase.caseId,
         updateType: "follow_up",
-        message: languageUpdate.english,
-        messageUrdu: languageUpdate.urdu,
+        message: contextualUpdate.english,
+        messageUrdu: contextualUpdate.urdu,
         agentType: "follow_up_agent"
       });
 
@@ -31,7 +34,7 @@ export class FollowUpAgent {
           emergencyCase.phoneNumber,
           emergencyCase.caseId,
           emergencyCase.status,
-          languageUpdate.english
+          contextualUpdate.english
         );
       }
 
@@ -49,12 +52,13 @@ export class FollowUpAgent {
     } catch (error) {
       console.error(`Follow-up Agent error for case ${emergencyCase.caseId}:`, error);
       
-      // Fallback follow-up
+      // Fallback follow-up with emergency-specific message
+      const fallbackMessage = this.getFallbackMessage(emergencyCase);
       await storage.createCaseUpdate({
         caseId: emergencyCase.caseId,
         updateType: "follow_up",
-        message: "Your emergency case is being processed. You will receive updates as they become available.",
-        messageUrdu: emergencyCase.language === "ur" ? "آپ کا ایمرجنسی کیس پروسیس ہو رہا ہے۔" : undefined,
+        message: fallbackMessage.english,
+        messageUrdu: fallbackMessage.urdu,
         agentType: "follow_up_agent"
       });
     }
@@ -176,6 +180,144 @@ export class FollowUpAgent {
       avgResponseTime,
       resolutionRate,
       patientSatisfaction: Number(patientSatisfaction.toFixed(1))
+    };
+  }
+
+  private shouldResolveImmediately(emergencyCase: EmergencyCase): boolean {
+    // Cases that should be resolved immediately after guidance (no appointment needed)
+    const immediateResolutionTypes = ['crime', 'public_safety'];
+    
+    // Crime cases that just need police contact info
+    if (immediateResolutionTypes.includes(emergencyCase.emergencyType)) {
+      return true;
+    }
+    
+    // Low priority urban issues that just need guidance
+    if (emergencyCase.emergencyType === 'urban' && 
+        emergencyCase.triageResults?.priority === 'low') {
+      return true;
+    }
+    
+    return false;
+  }
+
+  private async resolveImmediately(emergencyCase: EmergencyCase): Promise<void> {
+    const resolutionMessage = this.getImmediateResolutionMessage(emergencyCase);
+    
+    // Mark case as resolved
+    await storage.updateEmergencyCase(emergencyCase.id, {
+      status: "resolved",
+      resolvedAt: new Date()
+    });
+
+    // Send final update
+    await storage.createCaseUpdate({
+      caseId: emergencyCase.caseId,
+      updateType: "follow_up",
+      message: resolutionMessage.english,
+      messageUrdu: resolutionMessage.urdu,
+      agentType: "follow_up_agent"
+    });
+
+    // Send SMS for degraded mode or critical cases
+    if (emergencyCase.degradedMode || emergencyCase.triageResults?.priority === "critical") {
+      await smsService.sendStatusUpdateSMS(
+        emergencyCase.phoneNumber,
+        emergencyCase.caseId,
+        "resolved",
+        resolutionMessage.english
+      );
+    }
+
+    console.log(`Case ${emergencyCase.caseId} resolved immediately - no appointment needed`);
+  }
+
+  private getImmediateResolutionMessage(emergencyCase: EmergencyCase): { english: string; urdu?: string } {
+    const serviceName = emergencyCase.assignedService?.hospitalName || "Emergency Services";
+    const contactNumber = emergencyCase.assignedService?.contactNumber || "1122";
+    
+    switch (emergencyCase.emergencyType) {
+      case 'crime':
+        return {
+          english: `🚔 **CRIME RESPONSE COMPLETE**\n\nYour case ${emergencyCase.caseId} has been processed:\n\n✅ **Assigned Service:** ${serviceName}\n📞 **Direct Contact:** ${contactNumber}\n🆘 **Police Helpline:** 15\n\n**Next Steps:**\n• Contact the assigned station directly for immediate assistance\n• Call 15 for emergency police response\n• Keep this case number for reference: ${emergencyCase.caseId}\n\n**Your safety is our priority. Stay safe!**`,
+          urdu: emergencyCase.language === "ur" ? `آپ کا کیس ${emergencyCase.caseId} مکمل ہو گیا ہے۔ پولیس سے رابطہ: ${contactNumber}` : undefined
+        };
+        
+      case 'public_safety':
+        return {
+          english: `🛡️ **PUBLIC SAFETY GUIDANCE PROVIDED**\n\nYour case ${emergencyCase.caseId} has been resolved:\n\n✅ **Guidance Service:** ${serviceName}\n📞 **Contact:** ${contactNumber}\n🆘 **Emergency Helpline:** 1122\n\n**You have been provided with safety guidance and appropriate contact information.**\n\nCase Reference: ${emergencyCase.caseId}`,
+          urdu: emergencyCase.language === "ur" ? `آپ کا کیس ${emergencyCase.caseId} حل ہو گیا ہے۔ محفوظیت کی رہنمائی فراہم کی گئی۔` : undefined
+        };
+        
+      case 'urban':
+        return {
+          english: `🏙️ **URBAN ISSUE GUIDANCE COMPLETE**\n\nYour case ${emergencyCase.caseId} has been resolved:\n\n✅ **Guidance Provided:** Municipal services contact information\n📞 **Local Authority:** ${contactNumber}\n\n**You have been connected with the appropriate municipal services for your urban issue.**\n\nCase Reference: ${emergencyCase.caseId}`,
+          urdu: emergencyCase.language === "ur" ? `آپ کا شہری مسئلہ ${emergencyCase.caseId} حل ہو گیا ہے۔` : undefined
+        };
+        
+      default:
+        return {
+          english: `✅ **CASE RESOLVED**\n\nYour case ${emergencyCase.caseId} has been completed:\n\n📞 **Contact:** ${contactNumber}\n🆘 **Emergency:** 1122\n\nThank you for using Emergency Response AI.`,
+          urdu: emergencyCase.language === "ur" ? `آپ کا کیس ${emergencyCase.caseId} مکمل ہو گیا ہے۔` : undefined
+        };
+    }
+  }
+
+  private async generateContextualUpdate(emergencyCase: EmergencyCase): Promise<{ english: string; urdu?: string }> {
+    const serviceName = emergencyCase.assignedService?.hospitalName || "Emergency Services";
+    const contactNumber = emergencyCase.assignedService?.contactNumber || "1122";
+    const appointmentTime = emergencyCase.bookingDetails?.appointmentTime || "being scheduled";
+    const confirmationNumber = emergencyCase.bookingDetails?.confirmationNumber || emergencyCase.caseId;
+    
+    switch (emergencyCase.emergencyType) {
+      case 'medical':
+        return {
+          english: `🏥 **MEDICAL EMERGENCY UPDATE**\n\nCase ${emergencyCase.caseId} Status: **${emergencyCase.status.toUpperCase()}**\n\n✅ **Hospital Assigned:** ${serviceName}\n📅 **Appointment:** ${appointmentTime}\n🎫 **Confirmation:** ${confirmationNumber}\n📞 **Hospital Contact:** ${contactNumber}\n🆘 **Medical Emergency:** 1122\n\n**What to bring:**\n• Valid ID (CNIC)\n• Current medications list\n• Any medical reports\n\n**If your condition worsens, call 1122 immediately.**`,
+          urdu: emergencyCase.language === "ur" ? `آپ کا طبی ایمرجنسی کیس ${emergencyCase.caseId} - ہسپتال: ${serviceName}, اپوائنٹمنٹ: ${appointmentTime}` : undefined
+        };
+        
+      case 'fire':
+        return {
+          english: `🔥 **FIRE EMERGENCY UPDATE**\n\nCase ${emergencyCase.caseId} Status: **${emergencyCase.status.toUpperCase()}**\n\n✅ **Relief Center:** ${serviceName}\n📍 **Shelter Location:** ${emergencyCase.assignedService?.address || "Location details being confirmed"}\n📞 **Relief Contact:** ${contactNumber}\n🆘 **Fire Brigade:** 16\n\n**Safety Instructions:**\n• Follow evacuation routes provided\n• Stay away from fire areas\n• Report to assigned relief center\n\n**If fire spreads, call 16 immediately.**`,
+          urdu: emergencyCase.language === "ur" ? `آپ کا آگ کا ایمرجنسی کیس ${emergencyCase.caseId} - ریلیف سینٹر: ${serviceName}` : undefined
+        };
+        
+      case 'flood':
+        return {
+          english: `🌊 **FLOOD EMERGENCY UPDATE**\n\nCase ${emergencyCase.caseId} Status: **${emergencyCase.status.toUpperCase()}**\n\n✅ **Relief Center:** ${serviceName}\n📍 **Safe Location:** ${emergencyCase.assignedService?.address || "Location details being confirmed"}\n📞 **Rescue Contact:** ${contactNumber}\n🆘 **Rescue Services:** 1122\n\n**Safety Instructions:**\n• Move to higher ground immediately\n• Avoid flood water\n• Proceed to assigned relief center\n\n**If trapped, call 1122 immediately.**`,
+          urdu: emergencyCase.language === "ur" ? `آپ کا سیلاب ایمرجنسی کیس ${emergencyCase.caseId} - ریلیف سینٹر: ${serviceName}` : undefined
+        };
+        
+      case 'earthquake':
+        return {
+          english: `🏗️ **EARTHQUAKE EMERGENCY UPDATE**\n\nCase ${emergencyCase.caseId} Status: **${emergencyCase.status.toUpperCase()}**\n\n✅ **Relief Center:** ${serviceName}\n📍 **Safe Shelter:** ${emergencyCase.assignedService?.address || "Location details being confirmed"}\n📞 **Rescue Contact:** ${contactNumber}\n🆘 **Emergency:** 1122\n\n**Safety Instructions:**\n• Stay in open areas\n• Avoid damaged buildings\n• Report to assigned relief center\n\n**If aftershocks occur, call 1122.**`,
+          urdu: emergencyCase.language === "ur" ? `آپ کا زلزلہ ایمرجنسی کیس ${emergencyCase.caseId} - ریلیف سینٹر: ${serviceName}` : undefined
+        };
+        
+      default:
+        return {
+          english: `📋 **EMERGENCY UPDATE**\n\nCase ${emergencyCase.caseId} Status: **${emergencyCase.status.toUpperCase()}**\n\n✅ **Assigned Service:** ${serviceName}\n📞 **Contact:** ${contactNumber}\n🆘 **Emergency Helpline:** 1122\n\nYour case is being actively managed. You will receive further updates as processing continues.`,
+          urdu: emergencyCase.language === "ur" ? `آپ کا ایمرجنسی کیس ${emergencyCase.caseId} کی اپڈیٹ - سروس: ${serviceName}` : undefined
+        };
+    }
+  }
+
+  private getFallbackMessage(emergencyCase: EmergencyCase): { english: string; urdu?: string } {
+    const emergencyNumbers: { [key: string]: string } = {
+      'medical': '1122',
+      'crime': '15', 
+      'fire': '16',
+      'flood': '1122',
+      'earthquake': '1122',
+      'public_safety': '15',
+      'urban': '1122'
+    };
+    
+    const number = emergencyNumbers[emergencyCase.emergencyType] || '1122';
+    
+    return {
+      english: `⚠️ **EMERGENCY PROCESSING**\n\nYour case ${emergencyCase.caseId} is being processed.\n\n🆘 **If urgent, call:** ${number}\n\nYou will receive updates as they become available.`,
+      urdu: emergencyCase.language === "ur" ? `آپ کا ایمرجنسی کیس ${emergencyCase.caseId} پروسیس ہو رہا ہے۔ فوری ضرورت: ${number}` : undefined
     };
   }
 }
