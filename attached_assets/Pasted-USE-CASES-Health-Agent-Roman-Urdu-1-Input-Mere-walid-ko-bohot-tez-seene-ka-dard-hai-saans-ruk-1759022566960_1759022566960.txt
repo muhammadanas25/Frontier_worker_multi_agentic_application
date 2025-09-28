@@ -1,0 +1,287 @@
+USE CASES: 🔹 Health Agent
+Roman Urdu 1
+Input: “Mere walid ko bohot tez seene ka dard hai, saans ruk rahi hai.”
+
+
+Outputs:
+
+
+🩺 “This may be a heart emergency. Don’t exert, keep the patient sitting upright.”
+
+
+🏥 “Nearest Cardiology ER with beds: Punjab Institute of Cardiology, Lahore (042-111-xxxx).”
+
+
+💉 “If available, keep aspirin 300mg under the tongue.”
+
+
+📲 “Case ID: H-1101.”
+
+
+🔄 “Lite Mode fallback: Police Helpline 15 and ER number will be sent via SMS if internet drops.”
+
+
+Roman Urdu 2
+Input: “Mere bache ko 103 bukhaar hai, kya karoon?”
+
+
+Outputs:
+
+
+🩺 “Give paracetamol per weight (15mg/kg), keep child hydrated.”
+
+
+🩺 “If convulsions start, lay the child on their side.”
+
+
+🏥 “Nearest Children’s Hospital: Lahore Children’s Hospital (042-xxxxxx).”
+
+
+💊 “Nearest pharmacy: Fazal Din’s Pharma Plus, Jail Road Lahore.”
+
+
+📋 “Case ID: H-1102. You can track this case later.”
+
+
+English 1
+Input: “I need a hospital with ventilators in Karachi right now.”
+
+
+Outputs:
+
+
+🏥 “Nearest available: Jinnah Postgraduate Medical Centre ER, ventilators confirmed.”
+
+
+📞 “Emergency contact: 021-9920-xxxx.”
+
+
+🔔 “Alert sent to hospital admin dashboard.”
+
+
+📲 “Lite Mode fallback: hospital phone number sent via SMS.”
+
+
+🆔 “Case ID: H-1103.”
+
+
+English 2
+Input: “Where can I get A+ blood urgently in Islamabad?”
+
+
+Outputs:
+
+
+💉 “Nearest blood bank: Fatimid Foundation, G-9 Islamabad (051-xxxxxx).”
+
+
+📞 “Alternate: Pakistan Red Crescent Society, Sector H-8.”
+
+
+⚠️ “Tip: Bring CNIC and one family donor for emergency blood issue.”
+
+
+📲 “SMS with both blood bank numbers has been sent.”
+
+
+📋 “Case ID: H-1104.”
+
+
+
+🔹 Crime Agent
+Roman Urdu 1
+Input: “Mere ghar mein abhi abhi daka hua hai.”
+
+
+Outputs:
+
+
+👮 “Nearest Police Station: Gulshan-e-Iqbal PS, Karachi (021-xxxxxx).”
+
+
+📋 “Your report has been logged. Case ID: C-2101.”
+
+
+⚖️ Legal tip: “Under Section 154 CrPC, police must register your FIR immediately. You are entitled to a free copy of the FIR.
+
+
+Legal Reference: CrPC Section 154 (First Information Report) — Punjab Police FIR process【source】.
+
+
+Disclaimer: This is general legal information, not tailored advice.
+
+
+
+🔄 “Lite Mode fallback: Police Helpline 15 shared via SMS.”
+
+
+Roman Urdu 2
+Input (Citizen): “Kal Saddar Karachi mein mera mobile snatch hua tha, ab kya karoon?”
+ Outputs (AI):
+👮 “Nearest Police Station: Saddar PS, Karachi (021-xxxxxx).”
+
+
+📋 “Case ID: C-2085 registered as Mobile Theft.”
+
+
+⚖️ “Legal Tip: Under CrPC 154, police are bound to register a case for stolen property. Bring CNIC and device IMEI details.
+
+
+Legal Reference: CrPC Section 154 — Right to lodge FIR【source】.
+
+
+Disclaimer: This is general legal information, not legal advice.
+
+
+🕵️ “PTA blocking service: Dial *8484# to block IMEI.”
+
+
+📲 “SMS sent with police contact + IMEI block details.”
+
+
+Roman Urdu 3
+
+
+Input (Citizen):“Mujhe ek fake SMS aya tha bank se aur paisay kategaye, main kya karoon?”
+Outputs (AI):
+👮 “Nearest Cybercrime Wing: FIA Cybercrime Circle, Lahore (042-9920xxxx).”
+
+
+📞 “Cybercrime Helpline: 1991 (available nationwide).”
+
+
+📋 “Case ID: C-2205 has been created for your fraud report.”
+
+
+⚖️ “Legal Tip: Under PECA 2016 (Prevention of Electronic Crimes Act), you can file a complaint with FIA Cybercrime Wing. Preserve the SMS and bank statement.
+
+
+Legal Reference: FIA Cybercrime Complaint Portal【source】.
+
+
+Disclaimer: This is general legal information, not case-specific legal advice.
+
+
+🛡 “Contact your bank’s fraud hotline immediately to block further transactions.”
+
+
+📲 “SMS sent with FIA helpline and bank fraud contact for offline use.”
+
+
+
+English 1
+Input: “How do I report domestic violence safely?”
+
+
+Outputs:
+
+
+👮 “Women Police Helpline: 1043.”
+
+
+🛡 “Nearest safe zone: Women Crisis Centre, F-8 Islamabad.”
+
+
+🕵️ “Anonymous reporting enabled. Case ID: C-2104.”
+
+
+⚖️ “Legal tip: Under the Punjab Protection of Women Against Violence Act 2016, you have the right to file a complaint safely, and request shelter/medical support.
+
+
+Legal Reference: Punjab Women Protection Act 2016【source】.
+
+
+Disclaimer: This is general legal information, not case-specific legal advice.
+
+
+📲 “Lite Mode fallback: only hotline shared if offline.”
+
+
+
+🔹 Disaster Agent
+Roman Urdu 1
+Input: “Gaon mein paani ghus gaya hai, log phansay huay hain.”
+
+
+Outputs:
+
+
+🚨 “Rescue 1122 notified.”
+
+
+🏚 “Nearest Relief Camp: Govt Boys High School, Muzaffargarh (capacity 80).”
+
+
+🛣 “Safe route: Take GT Road north, avoid low bridge.”
+
+
+📢 “Community Alert: SMS sent to nearby 2km radius.”
+
+
+📋 “Case ID: D-3101. Trackable later.”
+
+
+Roman Urdu 2
+Input: “ChaseUp mein aag lag gayi hai NIPA Karachi.”
+
+
+Outputs:
+
+
+🚒 “Nearest Fire Brigade: Gulistan e Jauhar, Helpline 16.”
+
+
+🩺 “First Aid: Don’t use water on electrical fire, use sand/extinguisher.”
+
+
+📲 “Alert sent to fire department dashboard.”
+
+
+📋 “Case ID: D-3102.”
+
+
+🔄 “Lite Mode fallback: Only fire station number shared via SMS.”
+
+
+English 1
+Input: “There’s an earthquake, building has collapsed in Karachi.”
+
+
+Outputs:
+
+
+🚨 “Rescue 1122 + NDMA alerted.”
+
+
+🏚 “Shelter Camp: Askari Park Ground, Karachi.”
+
+
+🩺 “First Aid Tip: Don’t move injured under rubble unless safe.”
+
+
+📲 “SMS with camp location sent.”
+
+
+📋 “Case ID: D-3103.”
+
+
+English 2
+Input: “Is there any ration truck coming to my area tomorrow?”
+
+
+Outputs:
+
+
+📦 “Yes, truck scheduled: 10 AM, Union Council 5, Multan.”
+
+
+📞 “ Edhi Relief helpline: 0800-xxxx for confirmation.”
+
+
+🧑‍🤝‍🧑 “NGO partner: Edhi Foundation, distribution lead.”
+
+
+📲 “Lite Mode fallback: time + UC location sent by SMS.”
+
+
+📋 “Case ID: D-3104.”

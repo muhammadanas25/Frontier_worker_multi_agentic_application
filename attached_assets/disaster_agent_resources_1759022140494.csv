@@ -1,0 +1,49 @@
+record_id,city,area,incident_type,shelter_name,shelter_capacity,shelter_lat,shelter_long,camp_status,safe_evacuation_route,route_notes,relief_truck_date,relief_truck_time,relief_contact_phone,rescue_hotline,police_helpline,sms_alert_radius_km,water_stock_bottles,food_stock_packs,medical_kits,last_updated
+D0001,Karachi,Sector B,Storm,Govt Boys High School,429,24.806707,66.934671,Open,Northern Bypass,Avoid low bridge during flood,2025-10-08,23:06,030-39345092,1122,15,1,1209,864,16,2025-09-27 23:09
+D0002,Karachi,Township,Heatwave,Union Council Hall,358,24.747069,66.928821,Full,Northern Bypass,Use in daytime only,2025-10-06,12:23,032-47295260,1122,15,5,1657,13,81,2025-09-27 23:09
+D0003,Karachi,Block C,Flood,Community Hall,440,24.821483,66.903359,Closed,GT Road,Police checkpoint ahead,2025-10-03,18:25,034-49349722,1122,15,1,1098,255,193,2025-09-27 23:09
+D0004,Karachi,Industrial Area,Flood,Union Council Hall,148,24.909797,66.892098,Closed,Canal Bank Road,Police checkpoint ahead,2025-09-29,07:04,032-57683626,1122,15,2,569,928,186,2025-09-27 23:09
+D0005,Karachi,Township,Fire,College Auditorium,186,24.909137,67.045151,Near Capacity,GT Road,Clear of debris as of last update,2025-10-08,04:43,031-53524491,1122,15,10,946,777,138,2025-09-27 23:09
+D0006,Karachi,Sector A,Earthquake,Community Hall,470,24.748404,66.956809,Near Capacity,Ring Road,Avoid low bridge during flood,2025-10-01,18:05,031-45551614,1122,15,5,1342,1022,202,2025-09-27 23:09
+D0007,Lahore,Block C,Fire,Community Hall,431,31.535128,74.301758,Near Capacity,Airport Link,Safe for light vehicles only,2025-10-07,11:32,030-30514014,1122,15,1,1043,1010,46,2025-09-27 23:09
+D0008,Lahore,Block C,Flood,College Auditorium,266,31.543538,74.331044,Open,Airport Link,Safe for light vehicles only,2025-10-06,07:44,030-49392920,1122,15,3,1396,1099,136,2025-09-27 23:09
+D0009,Lahore,Riverside,Flood,Community Hall,282,31.401179,74.412002,Full,Northern Bypass,Police checkpoint ahead,2025-10-06,04:41,031-30513739,1122,15,10,1723,1308,259,2025-09-27 23:09
+D0010,Lahore,Industrial Area,Flood,Community Hall,326,31.62924,74.460084,Full,GT Road,Clear of debris as of last update,2025-10-03,14:10,031-86149359,1122,15,1,1799,629,122,2025-09-27 23:09
+D0011,Lahore,Sector B,Storm,Govt Boys High School,424,31.517038,74.255311,Near Capacity,Airport Link,Alternate route if main road blocked,2025-09-30,20:39,034-36998038,1122,15,2,542,1080,216,2025-09-27 23:09
+D0012,Lahore,Old City,Flood,Youth Center,393,31.556371,74.343844,Full,Airport Link,Safe for light vehicles only,2025-09-29,06:23,034-39557077,1122,15,2,43,1204,283,2025-09-27 23:09
+D0013,Islamabad,Sector A,Earthquake,Govt Boys High School,412,33.715865,72.982846,Closed,GT Road,Police checkpoint ahead,2025-09-29,15:24,034-73440831,1122,15,10,438,1104,67,2025-09-27 23:09
+D0014,Islamabad,Township,Heatwave,Youth Center,463,33.662094,72.950538,Open,Northern Bypass,Safe for light vehicles only,2025-10-03,12:35,033-55540424,1122,15,1,1379,1338,50,2025-09-27 23:09
+D0015,Islamabad,Sector B,Flood,Community Hall,148,33.61005,73.035567,Closed,National Highway,Alternate route if main road blocked,2025-10-02,13:24,035-82556484,1122,15,1,1654,1127,50,2025-09-27 23:09
+D0016,Islamabad,Sector A,Flood,Govt Boys High School,435,33.768087,72.967815,Near Capacity,National Highway,Safe for light vehicles only,2025-10-01,12:06,033-48285503,1122,15,3,776,4,199,2025-09-27 23:09
+D0017,Islamabad,Riverside,Fire,College Auditorium,424,33.803301,73.061284,Open,Northern Bypass,Safe for light vehicles only,2025-09-30,05:27,030-16729990,1122,15,3,1186,1110,31,2025-09-27 23:09
+D0018,Islamabad,Hill View,Flood,Union Council Hall,486,33.69187,72.941551,Near Capacity,Airport Link,Avoid low bridge during flood,2025-09-30,01:47,034-89795010,1122,15,2,826,245,291,2025-09-27 23:09
+D0019,Peshawar,Sector A,Earthquake,Union Council Hall,91,33.995714,71.544981,Near Capacity,Airport Link,Police checkpoint ahead,2025-10-02,05:51,033-52436584,1122,15,3,543,810,67,2025-09-27 23:09
+D0020,Peshawar,Sector B,Earthquake,Govt Boys High School,284,34.044178,71.540018,Near Capacity,GT Road,Avoid low bridge during flood,2025-10-06,05:41,032-48250360,1122,15,2,1911,714,35,2025-09-27 23:09
+D0021,Peshawar,Block C,Storm,Youth Center,476,34.025472,71.477504,Full,Northern Bypass,Clear of debris as of last update,2025-09-28,21:01,032-25492573,1122,15,2,1908,1358,53,2025-09-27 23:09
+D0022,Peshawar,Sector B,Earthquake,College Auditorium,333,33.932407,71.472522,Closed,Canal Bank Road,Use in daytime only,2025-10-03,05:52,032-15917225,1122,15,5,514,104,47,2025-09-27 23:09
+D0023,Peshawar,Sector A,Heatwave,Sports Complex,444,33.926497,71.640052,Open,Canal Bank Road,Use in daytime only,2025-10-05,16:54,030-59555330,1122,15,10,229,154,76,2025-09-27 23:09
+D0024,Peshawar,Block C,Flood,Youth Center,115,33.905139,71.492416,Full,GT Road,Police checkpoint ahead,2025-10-01,20:24,035-30743797,1122,15,10,1597,1146,208,2025-09-27 23:09
+D0025,Multan,Township,Fire,Community Hall,459,30.232085,71.61644,Full,GT Road,Alternate route if main road blocked,2025-10-03,13:00,030-73174945,1122,15,5,326,1436,55,2025-09-27 23:09
+D0026,Multan,Township,Heatwave,Community Hall,468,30.257928,71.488818,Full,Canal Bank Road,Alternate route if main road blocked,2025-09-28,20:21,035-78371272,1122,15,3,570,142,142,2025-09-27 23:09
+D0027,Multan,Riverside,Flood,College Auditorium,481,30.166192,71.630317,Open,GT Road,Police checkpoint ahead,2025-09-30,17:25,033-91363974,1122,15,3,1221,889,176,2025-09-27 23:09
+D0028,Multan,Sector B,Fire,Youth Center,345,30.083119,71.415553,Full,National Highway,Avoid low bridge during flood,2025-10-06,16:52,032-99038359,1122,15,10,883,143,169,2025-09-27 23:09
+D0029,Multan,Sector B,Fire,College Auditorium,203,30.159209,71.564954,Closed,Ring Road,Safe for light vehicles only,2025-10-02,16:17,034-50392808,1122,15,10,1361,776,89,2025-09-27 23:09
+D0030,Multan,Riverside,Heatwave,Union Council Hall,476,30.037597,71.473759,Closed,National Highway,Clear of debris as of last update,2025-10-07,19:29,033-32775593,1122,15,10,905,1383,109,2025-09-27 23:09
+D0031,Quetta,Sector B,Fire,Sports Complex,313,30.219125,67.003623,Near Capacity,GT Road,Alternate route if main road blocked,2025-10-08,08:23,034-19774839,1122,15,5,50,94,125,2025-09-27 23:09
+D0032,Quetta,Hill View,Flood,Youth Center,372,30.197961,67.027403,Open,National Highway,Safe for light vehicles only,2025-10-04,06:18,035-79519112,1122,15,2,1594,870,112,2025-09-27 23:09
+D0033,Quetta,Hill View,Storm,Govt Boys High School,335,30.119608,67.058601,Full,National Highway,Alternate route if main road blocked,2025-10-05,20:42,034-69849511,1122,15,5,1945,906,258,2025-09-27 23:09
+D0034,Quetta,Block C,Fire,College Auditorium,491,30.173722,66.917206,Full,Canal Bank Road,Use in daytime only,2025-10-02,15:40,032-55076693,1122,15,2,900,158,146,2025-09-27 23:09
+D0035,Quetta,Industrial Area,Heatwave,Union Council Hall,91,30.09301,66.910503,Full,Northern Bypass,Alternate route if main road blocked,2025-10-01,01:35,031-66390708,1122,15,1,1111,954,212,2025-09-27 23:09
+D0036,Quetta,Riverside,Earthquake,Union Council Hall,406,30.064488,67.066358,Closed,Airport Link,Safe for light vehicles only,2025-10-04,23:31,034-39600202,1122,15,10,1747,858,275,2025-09-27 23:09
+D0037,Faisalabad,Hill View,Fire,Community Hall,189,31.435001,73.021966,Closed,Ring Road,Use in daytime only,2025-10-08,11:55,033-89442503,1122,15,1,1883,261,273,2025-09-27 23:09
+D0038,Faisalabad,Sector A,Fire,Govt Boys High School,379,31.433267,73.223044,Closed,Canal Bank Road,Avoid low bridge during flood,2025-10-02,11:29,033-43859311,1122,15,3,669,691,194,2025-09-27 23:09
+D0039,Faisalabad,Sector B,Flood,Youth Center,59,31.510166,73.027501,Open,Ring Road,Alternate route if main road blocked,2025-10-08,01:58,034-30452412,1122,15,1,1944,506,102,2025-09-27 23:09
+D0040,Faisalabad,Township,Storm,Community Hall,292,31.49107,73.150353,Open,Canal Bank Road,Safe for light vehicles only,2025-10-02,10:19,034-13446499,1122,15,1,1592,335,159,2025-09-27 23:09
+D0041,Faisalabad,Old City,Fire,Union Council Hall,396,31.548326,73.105074,Open,Northern Bypass,Alternate route if main road blocked,2025-09-29,17:53,030-56600900,1122,15,10,1427,617,61,2025-09-27 23:09
+D0042,Faisalabad,Riverside,Earthquake,College Auditorium,239,31.34695,73.17041,Closed,GT Road,Safe for light vehicles only,2025-10-05,02:36,035-80027662,1122,15,2,1448,313,222,2025-09-27 23:09
+D0043,Hyderabad,Old City,Fire,Union Council Hall,463,25.496708,68.423714,Open,National Highway,Safe for light vehicles only,2025-10-07,07:29,034-91917334,1122,15,5,571,923,124,2025-09-27 23:09
+D0044,Hyderabad,Riverside,Earthquake,Sports Complex,64,25.394634,68.315803,Full,National Highway,Alternate route if main road blocked,2025-10-03,07:30,030-42394260,1122,15,2,1138,20,264,2025-09-27 23:09
+D0045,Hyderabad,Riverside,Flood,Youth Center,334,25.45796,68.403546,Open,Northern Bypass,Use in daytime only,2025-10-05,13:59,032-99115205,1122,15,2,602,453,207,2025-09-27 23:09
+D0046,Hyderabad,Industrial Area,Heatwave,Youth Center,333,25.403421,68.339921,Full,Northern Bypass,Clear of debris as of last update,2025-10-03,10:53,035-35848226,1122,15,1,627,514,118,2025-09-27 23:09
+D0047,Hyderabad,Industrial Area,Earthquake,Govt Boys High School,430,25.404607,68.420726,Full,Canal Bank Road,Alternate route if main road blocked,2025-10-01,22:39,032-34084236,1122,15,2,205,397,151,2025-09-27 23:09
+D0048,Hyderabad,Old City,Heatwave,Govt Boys High School,412,25.404192,68.303635,Open,GT Road,Clear of debris as of last update,2025-10-02,21:17,033-74251933,1122,15,3,1787,25,293,2025-09-27 23:09
