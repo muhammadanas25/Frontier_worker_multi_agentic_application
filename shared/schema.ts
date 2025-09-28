@@ -87,8 +87,8 @@ export const insertEmergencyCaseSchema = createInsertSchema(emergencyCases).pick
   language: true,
   degradedMode: true,
 }).extend({
-  emergencyType: z.enum(["medical", "crime", "fire", "flood", "earthquake", "urban", "public_safety"]),
-  urgencyLevel: z.enum(["critical", "high", "medium"]),
+  emergencyType: z.enum(["medical", "crime", "fire", "flood", "earthquake", "urban", "public_safety", "unknown"]),
+  urgencyLevel: z.enum(["critical", "high", "medium", "unknown"]),
   language: z.enum(["en", "ur"]),
 });
 

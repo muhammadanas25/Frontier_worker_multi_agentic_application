@@ -10,6 +10,8 @@ export interface TriageAssessment {
   confidence: number;
   recommendedActions: string[];
   estimatedResponseTime: string;
+  emergencyType: "medical" | "crime" | "fire" | "flood" | "earthquake" | "urban" | "public_safety" | "unknown";
+  urgencyLevel: "critical" | "high" | "medium" | "unknown";
 }
 
 export interface ServiceRecommendation {
@@ -20,27 +22,25 @@ export interface ServiceRecommendation {
 }
 
 export async function analyzeEmergencyTriage(
-  emergencyType: string,
   description: string,
-  urgencyLevel: string,
   location: string
 ): Promise<TriageAssessment> {
   try {
     const prompt = `As an emergency triage AI expert, analyze this emergency situation and provide a detailed assessment:
 
-Emergency Type: ${emergencyType}
 Description: ${description}
-Self-reported Urgency: ${urgencyLevel}
 Location: ${location}
 
-Consider the following factors:
-1. Life-threatening potential
-2. Time sensitivity
-3. Resource requirements
-4. Patient safety
-5. Public health implications
+From the description, determine:
+1. The specific emergency type (medical, crime, fire, flood, earthquake, urban, public_safety, or unknown)
+2. The urgency level (critical, high, medium, or unknown)
+3. Life-threatening potential
+4. Time sensitivity
+5. Resource requirements
+6. Patient safety
+7. Public health implications
 
-Provide a comprehensive triage assessment with priority level, detailed analysis, confidence score, recommended actions, and estimated response time.`;
+Provide a comprehensive triage assessment with detected emergency type, urgency level, priority, detailed analysis, confidence score, recommended actions, and estimated response time.`;
 
     const response = await ai.models.generateContent({
       model: "gemini-2.5-pro",
@@ -59,9 +59,17 @@ Provide a comprehensive triage assessment with priority level, detailed analysis
               type: "array",
               items: { type: "string" }
             },
-            estimatedResponseTime: { type: "string" }
+            estimatedResponseTime: { type: "string" },
+            emergencyType: {
+              type: "string",
+              enum: ["medical", "crime", "fire", "flood", "earthquake", "urban", "public_safety", "unknown"]
+            },
+            urgencyLevel: {
+              type: "string", 
+              enum: ["critical", "high", "medium", "unknown"]
+            }
           },
-          required: ["priority", "assessment", "confidence", "recommendedActions", "estimatedResponseTime"]
+          required: ["priority", "assessment", "confidence", "recommendedActions", "estimatedResponseTime", "emergencyType", "urgencyLevel"]
         }
       },
       contents: prompt
@@ -77,11 +85,13 @@ Provide a comprehensive triage assessment with priority level, detailed analysis
     console.error("Gemini triage analysis error:", error);
     // Fallback assessment
     return {
-      priority: urgencyLevel as "critical" | "high" | "medium" | "low",
+      priority: "medium",
       assessment: "Unable to perform AI analysis. Manual triage required.",
       confidence: 0.5,
       recommendedActions: ["Contact emergency services immediately", "Await manual triage"],
-      estimatedResponseTime: "5-10 minutes"
+      estimatedResponseTime: "5-10 minutes",
+      emergencyType: "unknown",
+      urgencyLevel: "unknown"
     };
   }
 }

@@ -31,12 +31,12 @@ export default function EmergencyForm({ language, degradedMode, onCaseCreated }:
   const form = useForm<InsertEmergencyCase>({
     resolver: zodResolver(insertEmergencyCaseSchema),
     defaultValues: {
-      emergencyType: undefined,
+      emergencyType: "unknown" as const,
+      urgencyLevel: "unknown" as const,
       description: "",
       location: "",
       coordinates: undefined,
       phoneNumber: "",
-      urgencyLevel: undefined,
       language,
       degradedMode,
     },
@@ -75,21 +75,6 @@ export default function EmergencyForm({ language, degradedMode, onCaseCreated }:
     createEmergencyCase.mutate(submissionData);
   };
 
-  const emergencyTypes = [
-    { value: "medical", label: "🩺 Medical Emergency", labelUr: "طبی ایمرجنسی" },
-    { value: "crime", label: "👮 Crime Report", labelUr: "جرم کی رپورٹ" },
-    { value: "fire", label: "🚒 Fire Emergency", labelUr: "آگ کی ایمرجنسی" },
-    { value: "flood", label: "🌊 Flood Evacuation", labelUr: "سیلاب کی انخلاء" },
-    { value: "earthquake", label: "🏗️ Earthquake Response", labelUr: "زلزلے کا جواب" },
-    { value: "urban", label: "🏙️ Urban Services", labelUr: "شہری خدمات" },
-    { value: "public_safety", label: "⚠️ Public Safety", labelUr: "عوامی تحفظ" }
-  ];
-
-  const urgencyLevels = [
-    { value: "critical", label: "🔴 Critical - Life threatening", labelUr: "انتہائی خطرناک - جان کو خطرہ" },
-    { value: "high", label: "🟡 High - Urgent attention needed", labelUr: "زیادہ - فوری توجہ درکار" },
-    { value: "medium", label: "🟢 Medium - Can wait some time", labelUr: "درمیانہ - کچھ وقت انتظار ہو سکتا ہے" }
-  ];
 
   return (
     <Card>
@@ -116,35 +101,6 @@ export default function EmergencyForm({ language, degradedMode, onCaseCreated }:
               </div>
             </div>
 
-            {/* Emergency Type */}
-            <FormField
-              control={form.control}
-              name="emergencyType"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel data-testid="label-emergency-type">
-                    {language === "en" ? "Emergency Type" : "ایمرجنسی کی قسم"}
-                  </FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl>
-                      <SelectTrigger data-testid="select-emergency-type">
-                        <SelectValue placeholder={
-                          language === "en" ? "Select emergency type..." : "ایمرجنسی کی قسم منتخب کریں..."
-                        } />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {emergencyTypes.map((type) => (
-                        <SelectItem key={type.value} value={type.value}>
-                          {language === "en" ? type.label : type.labelUr}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
 
             {/* Location */}
             <FormField
@@ -248,34 +204,6 @@ export default function EmergencyForm({ language, degradedMode, onCaseCreated }:
                 )}
               />
 
-              <FormField
-                control={form.control}
-                name="urgencyLevel"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel data-testid="label-urgency">
-                      {language === "en" ? "Urgency Level" : "فوریت کی سطح"}
-                    </FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger data-testid="select-urgency">
-                          <SelectValue placeholder={
-                            language === "en" ? "Select urgency..." : "فوریت منتخب کریں..."
-                          } />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {urgencyLevels.map((level) => (
-                          <SelectItem key={level.value} value={level.value}>
-                            {language === "en" ? level.label : level.labelUr}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
             </div>
 
             {/* Degraded Mode Warning */}

@@ -7,17 +7,17 @@ export class TriageAgent {
     console.log(`Triage Agent processing case: ${emergencyCase.caseId}`);
 
     try {
-      // Use Gemini AI for intelligent triage
+      // Use Gemini AI for intelligent triage (detects emergency type and urgency from description)
       const triageResults = await analyzeEmergencyTriage(
-        emergencyCase.emergencyType,
         emergencyCase.description,
-        emergencyCase.urgencyLevel,
         emergencyCase.location
       );
 
-      // Update case with triage results
+      // Update case with triage results and detected emergency type/urgency
       await storage.updateEmergencyCase(emergencyCase.id, {
         status: "triaged",
+        emergencyType: triageResults.emergencyType,
+        urgencyLevel: triageResults.urgencyLevel,
         triageResults: {
           priority: triageResults.priority,
           assessment: triageResults.assessment,
@@ -29,28 +29,32 @@ export class TriageAgent {
       await storage.createCaseUpdate({
         caseId: emergencyCase.caseId,
         updateType: "triage",
-        message: `Triage completed. Priority: ${triageResults.priority}. ${triageResults.assessment}`,
-        messageUrdu: emergencyCase.language === "ur" ? `ٹرائیج مکمل۔ ترجیح: ${triageResults.priority}` : undefined,
+        message: `Triage completed. Emergency Type: ${triageResults.emergencyType}, Urgency: ${triageResults.urgencyLevel}, Priority: ${triageResults.priority}. ${triageResults.assessment}`,
+        messageUrdu: emergencyCase.language === "ur" ? `ٹرائیج مکمل۔ قسم: ${triageResults.emergencyType}, فوریت: ${triageResults.urgencyLevel}, ترجیح: ${triageResults.priority}` : undefined,
         agentType: "triage_agent"
       });
 
-      console.log(`Triage completed for case ${emergencyCase.caseId}: ${triageResults.priority}`);
+      console.log(`Triage completed for case ${emergencyCase.caseId}: ${triageResults.emergencyType}/${triageResults.urgencyLevel}/${triageResults.priority}`);
       return triageResults;
 
     } catch (error) {
       console.error(`Triage Agent error for case ${emergencyCase.caseId}:`, error);
       
-      // Fallback triage based on user-reported urgency
+      // Fallback triage with default values
       const fallbackResults: TriageAssessment = {
-        priority: this.mapUrgencyToPriority(emergencyCase.urgencyLevel),
+        priority: "medium",
         assessment: "Automated triage unavailable. Manual review required.",
         confidence: 0.5,
         recommendedActions: ["Contact emergency services", "Manual triage needed"],
-        estimatedResponseTime: "10-15 minutes"
+        estimatedResponseTime: "10-15 minutes",
+        emergencyType: "unknown",
+        urgencyLevel: "unknown"
       };
 
       await storage.updateEmergencyCase(emergencyCase.id, {
         status: "triaged",
+        emergencyType: fallbackResults.emergencyType,
+        urgencyLevel: fallbackResults.urgencyLevel,
         triageResults: {
           priority: fallbackResults.priority,
           assessment: fallbackResults.assessment,

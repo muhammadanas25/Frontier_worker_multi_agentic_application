@@ -125,9 +125,14 @@ export default function CaseManagement({ cases }: CaseManagementProps) {
     }
   };
 
-  const formatTimeAgo = (date: Date) => {
+  const formatTimeAgo = (date: Date | string) => {
+    const dateObj = typeof date === 'string' ? new Date(date) : date;
+    if (!dateObj || isNaN(dateObj.getTime())) {
+      return 'Unknown time';
+    }
+    
     const now = new Date();
-    const diffMs = now.getTime() - date.getTime();
+    const diffMs = now.getTime() - dateObj.getTime();
     const diffMins = Math.floor(diffMs / (1000 * 60));
     const diffHours = Math.floor(diffMins / 60);
     
@@ -136,7 +141,7 @@ export default function CaseManagement({ cases }: CaseManagementProps) {
     } else if (diffHours < 24) {
       return `${diffHours}h ago`;
     } else {
-      return date.toLocaleDateString();
+      return dateObj.toLocaleDateString();
     }
   };
 
