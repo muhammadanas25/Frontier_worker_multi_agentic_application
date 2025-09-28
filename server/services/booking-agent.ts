@@ -39,6 +39,11 @@ export class BookingAgent {
         bookingDetails
       });
 
+      // Reduce hospital capacity (only for medical emergencies assigned to hospitals)
+      if (emergencyCase.emergencyType === 'medical' && emergencyCase.assignedService?.hospitalId) {
+        await this.reduceHospitalCapacity(emergencyCase.assignedService.hospitalId);
+      }
+
       // Log booking update
       const updateMessage = `Appointment booked at ${emergencyCase.assignedService.hospitalName} for ${appointmentTime}. Confirmation: ${confirmationNumber}`;
       
@@ -220,6 +225,32 @@ export class BookingAgent {
       averageWaitTime,
       successfulBookings: bookedCases.filter(c => c.bookingDetails?.confirmationNumber).length
     };
+  }
+
+  private async reduceHospitalCapacity(hospitalId: string): Promise<void> {
+    try {
+      // Get current hospital data
+      const hospital = await storage.getHospitalById(hospitalId);
+      if (!hospital) {
+        console.log(`Hospital ${hospitalId} not found, skipping capacity reduction`);
+        return;
+      }
+
+      // Calculate new available beds (reduce by 1, but don't go below 0)
+      const currentAvailable = hospital.bedsAvailable || 0;
+      const newAvailable = Math.max(0, currentAvailable - 1);
+
+      // Update hospital capacity
+      await storage.updateHospital(hospitalId, {
+        bedsAvailable: newAvailable
+      });
+
+      console.log(`Hospital ${hospital.name} capacity reduced: ${currentAvailable} → ${newAvailable} beds available`);
+      
+    } catch (error) {
+      console.error(`Error reducing hospital capacity for ${hospitalId}:`, error);
+      // Don't throw error to avoid blocking the booking process
+    }
   }
 }
 

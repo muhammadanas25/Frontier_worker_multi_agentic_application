@@ -22,6 +22,8 @@ export interface IStorage {
   // Hospitals
   createHospital(hospital: InsertHospital): Promise<Hospital>;
   getAllHospitals(): Promise<Hospital[]>;
+  getHospitalById(id: string): Promise<Hospital | undefined>;
+  updateHospital(id: string, updates: Partial<Hospital>): Promise<Hospital | undefined>;
   getHospitalsByLocation(lat: number, lng: number, radius: number): Promise<Hospital[]>;
   getHospitalsBySpecialty(specialty: string): Promise<Hospital[]>;
   searchHospitals(query: string): Promise<Hospital[]>;
@@ -84,8 +86,13 @@ export class MemStorage implements IStorage {
       assignedService: null,
       bookingDetails: null,
       coordinates: insertCase.coordinates || null,
+      degradedMode: insertCase.degradedMode || false,
       createdAt: now,
       updatedAt: now,
+      triagedAt: null,
+      assignedAt: null,
+      bookedAt: null,
+      resolvedAt: null,
     };
     
     this.emergencyCases.set(id, emergencyCase);
@@ -167,6 +174,21 @@ export class MemStorage implements IStorage {
 
   async getAllHospitals(): Promise<Hospital[]> {
     return Array.from(this.hospitals.values());
+  }
+
+  async getHospitalById(id: string): Promise<Hospital | undefined> {
+    return this.hospitals.get(id);
+  }
+
+  async updateHospital(id: string, updates: Partial<Hospital>): Promise<Hospital | undefined> {
+    const existingHospital = this.hospitals.get(id);
+    if (!existingHospital) {
+      return undefined;
+    }
+    
+    const updatedHospital: Hospital = { ...existingHospital, ...updates };
+    this.hospitals.set(id, updatedHospital);
+    return updatedHospital;
   }
 
   async getHospitalsByLocation(lat: number, lng: number, radius: number): Promise<Hospital[]> {
