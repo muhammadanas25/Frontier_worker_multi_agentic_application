@@ -269,19 +269,28 @@ export default function AgentStatus({ caseId }: AgentStatusProps) {
           ))}
         </div>
 
-        {/* Latest Updates */}
+        {/* Latest Updates - Enhanced for Visibility */}
         {Array.isArray(caseUpdates) && caseUpdates.length > 0 && (
           <div className="mt-6 pt-4 border-t border-border">
-            <h4 className="font-medium mb-3" data-testid="latest-updates-title">Latest Updates</h4>
-            <div className="space-y-2 max-h-32 overflow-y-auto">
+            <h3 className="text-xl font-bold mb-4 text-primary flex items-center" data-testid="latest-updates-title">
+              📢 Latest Updates
+            </h3>
+            <div className="space-y-4">
               {Array.isArray(caseUpdates) && caseUpdates.slice(0, 3).map((update: any, index: number) => (
                 <div 
                   key={update.id} 
-                  className="text-sm p-2 bg-muted rounded text-muted-foreground"
+                  className="text-base p-4 bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-500 rounded-r-lg shadow-sm"
                   data-testid={`update-${index}`}
                 >
-                  <span className="font-medium capitalize">{update.agentType.replace('_', ' ')}: </span>
-                  {update?.message || 'Update message not available'}
+                  <div className="font-bold text-blue-900 dark:text-blue-100 mb-2 capitalize flex items-center">
+                    {update.agentType.replace('_', ' ') === 'follow up' ? '🔄' : '🤖'} {update.agentType.replace('_', ' ')} Agent:
+                  </div>
+                  <div className="text-blue-800 dark:text-blue-200 font-medium leading-relaxed whitespace-pre-wrap">
+                    {update?.message || 'Update message not available'}
+                  </div>
+                  <div className="text-xs text-blue-600 dark:text-blue-400 mt-2">
+                    {new Date(update.createdAt).toLocaleString()}
+                  </div>
                 </div>
               ))}
             </div>
