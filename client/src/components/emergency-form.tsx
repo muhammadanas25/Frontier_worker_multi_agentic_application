@@ -54,6 +54,8 @@ export default function EmergencyForm({ language, degradedMode, onCaseCreated }:
       });
       onCaseCreated(data.caseId);
       queryClient.invalidateQueries({ queryKey: ["/api/emergency-cases"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/emergency-cases-active"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/metrics/dashboard"] });
     },
     onError: (error) => {
       toast({

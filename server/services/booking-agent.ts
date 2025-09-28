@@ -35,6 +35,7 @@ export class BookingAgent {
       // Update case with booking details
       await storage.updateEmergencyCase(emergencyCase.id, {
         status: "in_progress",
+        bookedAt: new Date(),
         bookingDetails
       });
 
@@ -52,10 +53,11 @@ export class BookingAgent {
 
       // Send SMS confirmation if degraded mode or high priority
       if (emergencyCase.degradedMode || emergencyCase.triageResults?.priority === "critical") {
+        const hospitalName = emergencyCase.assignedService?.hospitalName || "Emergency Services";
         await smsService.sendAppointmentConfirmationSMS(
           emergencyCase.phoneNumber,
           emergencyCase.caseId,
-          emergencyCase.assignedService.hospitalName,
+          hospitalName,
           appointmentTime,
           instructions
         );
@@ -76,6 +78,7 @@ export class BookingAgent {
 
       await storage.updateEmergencyCase(emergencyCase.id, {
         status: "in_progress",
+        bookedAt: new Date(),
         bookingDetails: fallbackBooking
       });
 
@@ -191,10 +194,30 @@ export class BookingAgent {
     const allCases = await storage.getAllEmergencyCases();
     const bookedCases = allCases.filter(c => c.bookingDetails);
 
+    // Calculate actual average wait time based on case creation to booking completion
+    let totalWaitTime = 0;
+    let countWithWaitTime = 0;
+    
+    for (const case_ of bookedCases) {
+      if (case_.createdAt && case_.bookedAt) {
+        const createdTime = new Date(case_.createdAt).getTime();
+        const bookedTime = new Date(case_.bookedAt).getTime();
+        const waitTimeMinutes = (bookedTime - createdTime) / (1000 * 60);
+        if (waitTimeMinutes > 0 && waitTimeMinutes < 120) { // Filter out unrealistic times
+          totalWaitTime += waitTimeMinutes;
+          countWithWaitTime++;
+        }
+      }
+    }
+    
+    const averageWaitTime = countWithWaitTime > 0 
+      ? Math.round(totalWaitTime / countWithWaitTime)
+      : 15; // Default fallback
+
     return {
       totalBookings: bookedCases.length,
       emergencyBookings: bookedCases.filter(c => c.triageResults?.priority === "critical").length,
-      averageWaitTime: 32, // Mock metric - calculate from actual data
+      averageWaitTime,
       successfulBookings: bookedCases.filter(c => c.bookingDetails?.confirmationNumber).length
     };
   }

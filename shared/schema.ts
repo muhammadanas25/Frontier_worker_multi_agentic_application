@@ -42,6 +42,10 @@ export const emergencyCases = pgTable("emergency_cases", {
   degradedMode: boolean("degraded_mode").notNull().default(false),
   createdAt: timestamp("created_at").notNull().default(sql`now()`),
   updatedAt: timestamp("updated_at").notNull().default(sql`now()`),
+  triagedAt: timestamp("triaged_at"),
+  assignedAt: timestamp("assigned_at"),
+  bookedAt: timestamp("booked_at"),
+  resolvedAt: timestamp("resolved_at"),
 });
 
 export const caseUpdates = pgTable("case_updates", {

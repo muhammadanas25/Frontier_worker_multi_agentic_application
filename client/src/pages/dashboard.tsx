@@ -84,7 +84,7 @@ export default function Dashboard() {
               <div className="flex items-center justify-center mb-2">
                 <CheckCircle className="w-6 h-6 text-green-600 mr-2" />
                 <div className="text-3xl font-bold text-green-600" data-testid="text-resolved-today">
-                  {(metrics?.triage?.totalCases || 0) - (Array.isArray(activeCases) ? activeCases.length : 0)}
+                  {((metrics as any)?.triage?.totalCases || 0) - (Array.isArray(activeCases) ? activeCases.length : 0)}
                 </div>
               </div>
               <p className="text-sm text-green-800 dark:text-green-200">Resolved Today</p>

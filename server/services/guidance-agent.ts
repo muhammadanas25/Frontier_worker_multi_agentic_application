@@ -34,7 +34,7 @@ export class GuidanceAgent {
       const serviceRecommendation = await recommendService(
         emergencyCase.emergencyType,
         {
-          priority: emergencyCase.triageResults.priority,
+          priority: emergencyCase.triageResults.priority as "critical" | "high" | "medium" | "low",
           assessment: emergencyCase.triageResults.assessment,
           confidence: emergencyCase.triageResults.confidence,
           recommendedActions: [],
@@ -63,6 +63,7 @@ export class GuidanceAgent {
         // Update case with assigned service
         await storage.updateEmergencyCase(emergencyCase.id, {
           status: "assigned",
+          assignedAt: new Date(),
           assignedService
         });
 
@@ -96,6 +97,7 @@ export class GuidanceAgent {
 
       await storage.updateEmergencyCase(emergencyCase.id, {
         status: "assigned",
+        assignedAt: new Date(),
         assignedService: fallbackService
       });
 

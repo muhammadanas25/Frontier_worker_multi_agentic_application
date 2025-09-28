@@ -46,6 +46,7 @@ export default function CaseManagement({ cases }: CaseManagementProps) {
         description: "Case status has been updated successfully.",
       });
       queryClient.invalidateQueries({ queryKey: ["/api/emergency-cases-active"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/metrics/dashboard"] });
       setSelectedCase(null);
     },
     onError: (error) => {
@@ -69,6 +70,7 @@ export default function CaseManagement({ cases }: CaseManagementProps) {
         description: "Case has been marked as resolved and notifications sent.",
       });
       queryClient.invalidateQueries({ queryKey: ["/api/emergency-cases-active"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/metrics/dashboard"] });
       setSelectedCase(null);
     },
     onError: (error) => {
