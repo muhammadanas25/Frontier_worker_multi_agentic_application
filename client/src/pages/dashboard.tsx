@@ -71,7 +71,7 @@ export default function Dashboard() {
               <div className="flex items-center justify-center mb-2">
                 <AlertTriangle className="w-6 h-6 text-red-600 mr-2" />
                 <div className="text-3xl font-bold text-red-600" data-testid="text-active-cases">
-                  {activeCases?.length || 0}
+                  {Array.isArray(activeCases) ? activeCases.length : 0}
                 </div>
               </div>
               <p className="text-sm text-red-800 dark:text-red-200">Active Cases</p>
@@ -84,7 +84,7 @@ export default function Dashboard() {
               <div className="flex items-center justify-center mb-2">
                 <CheckCircle className="w-6 h-6 text-green-600 mr-2" />
                 <div className="text-3xl font-bold text-green-600" data-testid="text-resolved-today">
-                  {metrics?.triage?.totalCases - activeCases?.length || 0}
+                  {(metrics?.triage?.totalCases || 0) - (Array.isArray(activeCases) ? activeCases.length : 0)}
                 </div>
               </div>
               <p className="text-sm text-green-800 dark:text-green-200">Resolved Today</p>
@@ -97,7 +97,7 @@ export default function Dashboard() {
               <div className="flex items-center justify-center mb-2">
                 <Clock className="w-6 h-6 text-blue-600 mr-2" />
                 <div className="text-3xl font-bold text-blue-600" data-testid="text-avg-response">
-                  {metrics?.triage?.averageResponseTime || 4.2}m
+                  {(metrics as any)?.triage?.averageResponseTime || 4.2}m
                 </div>
               </div>
               <p className="text-sm text-blue-800 dark:text-blue-200">Avg Response</p>
@@ -110,7 +110,7 @@ export default function Dashboard() {
               <div className="flex items-center justify-center mb-2">
                 <Hospital className="w-6 h-6 text-purple-600 mr-2" />
                 <div className="text-3xl font-bold text-purple-600" data-testid="text-resource-usage">
-                  {metrics?.hospitalCapacity?.utilizationRate?.toFixed(0) || 78}%
+                  {(metrics as any)?.hospitalCapacity?.utilizationRate?.toFixed(0) || 78}%
                 </div>
               </div>
               <p className="text-sm text-purple-800 dark:text-purple-200">Resource Usage</p>
@@ -135,7 +135,7 @@ export default function Dashboard() {
                   <div>
                     <h4 className="font-medium text-blue-900 dark:text-blue-100">Triage Agent</h4>
                     <p className="text-sm text-blue-700 dark:text-blue-300">
-                      {metrics?.triage?.totalCases || 0} cases processed
+                      {(metrics as any)?.triage?.totalCases || 0} cases processed
                     </p>
                   </div>
                   <Badge variant="secondary" data-testid="badge-triage-status">Active</Badge>
@@ -145,7 +145,7 @@ export default function Dashboard() {
                   <div>
                     <h4 className="font-medium text-green-900 dark:text-green-100">Guidance Agent</h4>
                     <p className="text-sm text-green-700 dark:text-green-300">
-                      {metrics?.guidance?.totalAssignments || 0} assignments made
+                      {(metrics as any)?.guidance?.totalAssignments || 0} assignments made
                     </p>
                   </div>
                   <Badge variant="secondary" data-testid="badge-guidance-status">Active</Badge>
@@ -155,7 +155,7 @@ export default function Dashboard() {
                   <div>
                     <h4 className="font-medium text-purple-900 dark:text-purple-100">Booking Agent</h4>
                     <p className="text-sm text-purple-700 dark:text-purple-300">
-                      {metrics?.booking?.totalBookings || 0} bookings confirmed
+                      {(metrics as any)?.booking?.totalBookings || 0} bookings confirmed
                     </p>
                   </div>
                   <Badge variant="secondary" data-testid="badge-booking-status">Active</Badge>
@@ -177,32 +177,32 @@ export default function Dashboard() {
                 <div className="flex justify-between items-center">
                   <span className="text-sm font-medium">Total Beds</span>
                   <span className="font-bold" data-testid="text-total-beds">
-                    {metrics?.hospitalCapacity?.totalBeds || 0}
+                    {(metrics as any)?.hospitalCapacity?.totalBeds || 0}
                   </span>
                 </div>
                 
                 <div className="flex justify-between items-center">
                   <span className="text-sm font-medium">Available Beds</span>
                   <span className="font-bold text-green-600" data-testid="text-available-beds">
-                    {metrics?.hospitalCapacity?.availableBeds || 0}
+                    {(metrics as any)?.hospitalCapacity?.availableBeds || 0}
                   </span>
                 </div>
                 
                 <div className="flex justify-between items-center">
                   <span className="text-sm font-medium">Total Ventilators</span>
                   <span className="font-bold" data-testid="text-total-ventilators">
-                    {metrics?.hospitalCapacity?.totalVentilators || 0}
+                    {(metrics as any)?.hospitalCapacity?.totalVentilators || 0}
                   </span>
                 </div>
 
                 <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
                   <div 
                     className="bg-gradient-to-r from-green-500 to-yellow-500 h-3 rounded-full transition-all duration-300"
-                    style={{ width: `${metrics?.hospitalCapacity?.utilizationRate || 78}%` }}
+                    style={{ width: `${(metrics as any)?.hospitalCapacity?.utilizationRate || 78}%` }}
                   ></div>
                 </div>
                 <p className="text-xs text-muted-foreground text-center">
-                  Bed Utilization: {metrics?.hospitalCapacity?.utilizationRate?.toFixed(1) || 78}%
+                  Bed Utilization: {(metrics as any)?.hospitalCapacity?.utilizationRate?.toFixed(1) || 78}%
                 </p>
               </div>
             </CardContent>
@@ -210,7 +210,7 @@ export default function Dashboard() {
         </div>
 
         {/* Case Management Table */}
-        <CaseManagement cases={activeCases || []} />
+        <CaseManagement cases={Array.isArray(activeCases) ? activeCases : []} />
       </main>
     </div>
   );

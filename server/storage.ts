@@ -60,7 +60,11 @@ export class MemStorage implements IStorage {
 
   async createUser(insertUser: InsertUser): Promise<User> {
     const id = randomUUID();
-    const user: User = { ...insertUser, id };
+    const user: User = { 
+      ...insertUser, 
+      id,
+      role: insertUser.role || "citizen"
+    };
     this.users.set(id, user);
     return user;
   }
@@ -79,6 +83,7 @@ export class MemStorage implements IStorage {
       triageResults: null,
       assignedService: null,
       bookingDetails: null,
+      coordinates: insertCase.coordinates || null,
       createdAt: now,
       updatedAt: now,
     };
@@ -126,6 +131,7 @@ export class MemStorage implements IStorage {
     const update: CaseUpdate = {
       ...insertUpdate,
       id,
+      messageUrdu: insertUpdate.messageUrdu || null,
       createdAt: new Date(),
     };
     
@@ -142,7 +148,19 @@ export class MemStorage implements IStorage {
   // Hospitals
   async createHospital(insertHospital: InsertHospital): Promise<Hospital> {
     const id = randomUUID();
-    const hospital: Hospital = { ...insertHospital, id };
+    const hospital: Hospital = { 
+      ...insertHospital, 
+      id,
+      osmId: insertHospital.osmId || null,
+      amenity: insertHospital.amenity || null,
+      speciality: insertHospital.speciality || null,
+      address: insertHospital.address || null,
+      contactNumber: insertHospital.contactNumber || null,
+      beds: insertHospital.beds || null,
+      bedsAvailable: insertHospital.bedsAvailable || null,
+      ventilators: insertHospital.ventilators || null,
+      operatorType: insertHospital.operatorType || null
+    };
     this.hospitals.set(id, hospital);
     return hospital;
   }

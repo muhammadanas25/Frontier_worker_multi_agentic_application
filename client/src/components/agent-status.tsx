@@ -79,7 +79,7 @@ export default function AgentStatus({ caseId }: AgentStatusProps) {
       const newAgents = [...prevAgents];
       
       // Update based on case status
-      switch (emergencyCase.status) {
+      switch ((emergencyCase as any)?.status) {
         case "submitted":
           newAgents[0].status = "processing";
           newAgents[0].progress = 25;
@@ -89,7 +89,7 @@ export default function AgentStatus({ caseId }: AgentStatusProps) {
           newAgents[0].status = "complete";
           newAgents[0].progress = 100;
           newAgents[0].completedAt = new Date().toLocaleTimeString();
-          newAgents[0].result = `Priority: ${emergencyCase.triageResults?.priority}`;
+          newAgents[0].result = `Priority: ${(emergencyCase as any)?.triageResults?.priority}`;
           newAgents[1].status = "processing";
           newAgents[1].progress = 30;
           break;
@@ -100,7 +100,7 @@ export default function AgentStatus({ caseId }: AgentStatusProps) {
           newAgents[1].status = "complete";
           newAgents[1].progress = 100;
           newAgents[1].completedAt = new Date().toLocaleTimeString();
-          newAgents[1].result = `Assigned: ${emergencyCase.assignedService?.hospitalName}`;
+          newAgents[1].result = `Assigned: ${(emergencyCase as any)?.assignedService?.hospitalName}`;
           newAgents[2].status = "processing";
           newAgents[2].progress = 50;
           break;
@@ -113,7 +113,7 @@ export default function AgentStatus({ caseId }: AgentStatusProps) {
           newAgents[2].status = "complete";
           newAgents[2].progress = 100;
           newAgents[2].completedAt = new Date().toLocaleTimeString();
-          newAgents[2].result = `Appointment: ${emergencyCase.bookingDetails?.appointmentTime}`;
+          newAgents[2].result = `Appointment: ${(emergencyCase as any)?.bookingDetails?.appointmentTime}`;
           newAgents[3].status = "processing";
           newAgents[3].progress = 75;
           break;
@@ -270,18 +270,18 @@ export default function AgentStatus({ caseId }: AgentStatusProps) {
         </div>
 
         {/* Latest Updates */}
-        {caseUpdates && caseUpdates.length > 0 && (
+        {Array.isArray(caseUpdates) && caseUpdates.length > 0 && (
           <div className="mt-6 pt-4 border-t border-border">
             <h4 className="font-medium mb-3" data-testid="latest-updates-title">Latest Updates</h4>
             <div className="space-y-2 max-h-32 overflow-y-auto">
-              {caseUpdates.slice(0, 3).map((update: any, index: number) => (
+              {Array.isArray(caseUpdates) && caseUpdates.slice(0, 3).map((update: any, index: number) => (
                 <div 
                   key={update.id} 
                   className="text-sm p-2 bg-muted rounded text-muted-foreground"
                   data-testid={`update-${index}`}
                 >
                   <span className="font-medium capitalize">{update.agentType.replace('_', ' ')}: </span>
-                  {update.message}
+                  {update?.message || 'Update message not available'}
                 </div>
               ))}
             </div>

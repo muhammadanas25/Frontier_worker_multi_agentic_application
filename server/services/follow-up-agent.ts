@@ -13,7 +13,7 @@ export class FollowUpAgent {
         emergencyCase.status,
         emergencyCase.assignedService,
         emergencyCase.bookingDetails,
-        emergencyCase.language
+        emergencyCase.language as "en" | "ur"
       );
 
       // Create follow-up update

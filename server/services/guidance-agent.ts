@@ -33,7 +33,13 @@ export class GuidanceAgent {
       // Get AI recommendation for service type
       const serviceRecommendation = await recommendService(
         emergencyCase.emergencyType,
-        emergencyCase.triageResults,
+        {
+          priority: emergencyCase.triageResults.priority,
+          assessment: emergencyCase.triageResults.assessment,
+          confidence: emergencyCase.triageResults.confidence,
+          recommendedActions: [],
+          estimatedResponseTime: "5-10 minutes"
+        },
         recommendedHospitals
       );
 

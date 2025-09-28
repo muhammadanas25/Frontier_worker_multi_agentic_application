@@ -23,7 +23,7 @@ export class BookingAgent {
       const instructions = this.generateInstructions(
         emergencyCase.emergencyType,
         emergencyCase.triageResults?.priority || "medium",
-        emergencyCase.assignedService.hospitalName
+        emergencyCase.assignedService.hospitalName || "Unknown Hospital"
       );
 
       const bookingDetails = {
@@ -71,7 +71,7 @@ export class BookingAgent {
       const fallbackBooking = {
         appointmentTime: "Contact hospital directly",
         confirmationNumber: emergencyCase.caseId,
-        instructions: `Contact ${emergencyCase.assignedService.contactNumber || '1122'} immediately for assistance.`
+        instructions: `Contact ${emergencyCase.assignedService?.contactNumber || '1122'} immediately for assistance.`
       };
 
       await storage.updateEmergencyCase(emergencyCase.id, {

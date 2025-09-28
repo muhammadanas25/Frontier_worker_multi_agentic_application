@@ -87,7 +87,7 @@ export default function CaseManagement({ cases }: CaseManagementProps) {
       case_.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
       case_.emergencyType.toLowerCase().includes(searchQuery.toLowerCase());
     
-    const matchesStatus = statusFilter === "" || case_.status === statusFilter;
+    const matchesStatus = statusFilter === "" || statusFilter === "all" || case_.status === statusFilter;
     
     return matchesSearch && matchesStatus;
   });
@@ -179,7 +179,7 @@ export default function CaseManagement({ cases }: CaseManagementProps) {
               <SelectValue placeholder="Filter by status" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All statuses</SelectItem>
+              <SelectItem value="all">All statuses</SelectItem>
               <SelectItem value="submitted">Submitted</SelectItem>
               <SelectItem value="triaged">Triaged</SelectItem>
               <SelectItem value="assigned">Assigned</SelectItem>

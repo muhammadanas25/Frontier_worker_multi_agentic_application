@@ -16,7 +16,7 @@ export default function HospitalSearch() {
 
   const { data: hospitals, isLoading } = useQuery({
     queryKey: ["/api/hospitals/search", searchQuery, coordinates?.lat, coordinates?.lng, selectedSpecialty],
-    enabled: searchQuery.length > 2 || selectedSpecialty.length > 0 || !!coordinates,
+    enabled: searchQuery.length > 2 || (selectedSpecialty.length > 0 && selectedSpecialty !== "all") || !!coordinates,
     queryFn: async () => {
       const params = new URLSearchParams();
       if (searchQuery) params.append("q", searchQuery);
@@ -24,7 +24,7 @@ export default function HospitalSearch() {
         params.append("lat", coordinates.lat.toString());
         params.append("lng", coordinates.lng.toString());
       }
-      if (selectedSpecialty) params.append("specialty", selectedSpecialty);
+      if (selectedSpecialty && selectedSpecialty !== "all") params.append("specialty", selectedSpecialty);
 
       const response = await fetch(`/api/hospitals/search?${params.toString()}`);
       return response.json();
@@ -59,7 +59,7 @@ export default function HospitalSearch() {
               <SelectValue placeholder="All specialties" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All specialties</SelectItem>
+              <SelectItem value="all">All specialties</SelectItem>
               {specialties.map((specialty) => (
                 <SelectItem key={specialty.value} value={specialty.value}>
                   {specialty.label}
