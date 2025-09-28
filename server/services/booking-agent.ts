@@ -1,6 +1,7 @@
 import { EmergencyCase } from '@shared/schema';
 import { storage } from '../storage';
 import { smsService } from './sms-service';
+import { sendBookingConfirmation } from './email-service';
 
 export class BookingAgent {
   async processCase(emergencyCase: EmergencyCase): Promise<any> {
@@ -67,6 +68,14 @@ export class BookingAgent {
           instructions
         );
       }
+
+      // Send email confirmation for all medical bookings
+      await sendBookingConfirmation(
+        emergencyCase.phoneNumber,
+        emergencyCase.assignedService?.hospitalName || "Emergency Services",
+        appointmentTime,
+        confirmationNumber
+      );
 
       console.log(`Booking completed for case ${emergencyCase.caseId}: ${appointmentTime}`);
       return { bookingDetails, appointmentTime, confirmationNumber, instructions };
@@ -237,15 +246,22 @@ export class BookingAgent {
       }
 
       // Calculate new available beds (reduce by 1, but don't go below 0)
-      const currentAvailable = hospital.bedsAvailable || 0;
-      const newAvailable = Math.max(0, currentAvailable - 1);
+      const currentBedsAvailable = hospital.bedsAvailable || 0;
+      const newBedsAvailable = Math.max(0, currentBedsAvailable - 1);
 
-      // Update hospital capacity
+      // Calculate new available ventilators (reduce by 1 if emergency is critical, but don't go below 0)
+      const currentVentilators = hospital.ventilators || 0;
+      const newVentilators = Math.max(0, currentVentilators - 1);
+
+      // Update hospital capacity - reduce both beds and ventilators
       await storage.updateHospital(hospitalId, {
-        bedsAvailable: newAvailable
+        bedsAvailable: newBedsAvailable,
+        ventilators: newVentilators
       });
 
-      console.log(`Hospital ${hospital.name} capacity reduced: ${currentAvailable} → ${newAvailable} beds available`);
+      console.log(`Hospital ${hospital.name} capacity reduced:`);
+      console.log(`  Beds: ${currentBedsAvailable} → ${newBedsAvailable} available`);
+      console.log(`  Ventilators: ${currentVentilators} → ${newVentilators} available`);
       
     } catch (error) {
       console.error(`Error reducing hospital capacity for ${hospitalId}:`, error);
