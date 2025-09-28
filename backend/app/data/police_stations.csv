@@ -1,0 +1,7 @@
+station_name,address,lat,lon,phone,emergency_services
+Central Police Station,100 Police Plaza,40.7128,-74.0060,911,true
+Downtown Precinct,200 Broadway,40.7589,-73.9851,555-0201,true
+North District Station,300 5th Ave,40.7505,-73.9934,555-0202,true
+South Precinct,400 Canal St,40.7282,-73.9942,555-0203,true
+East Side Station,500 Lexington Ave,40.7614,-73.9776,555-0204,true
+

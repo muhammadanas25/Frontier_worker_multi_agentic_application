@@ -1,0 +1,39 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: frontline-adk
+  annotations:
+    run.googleapis.com/ingress: all
+    run.googleapis.com/execution-environment: gen2
+spec:
+  template:
+    metadata:
+      annotations:
+        run.googleapis.com/execution-environment: gen2
+        run.googleapis.com/cpu-throttling: "false"
+    spec:
+      containerConcurrency: 100
+      timeoutSeconds: 300
+      containers:
+      - image: gcr.io/PROJECT_ID/frontline-adk
+        ports:
+        - containerPort: 8080
+        env:
+        - name: GOOGLE_CLOUD_PROJECT
+          value: PROJECT_ID
+        - name: GOOGLE_CLOUD_LOCATION
+          value: us-central1
+        - name: GCS_BUCKET
+          value: frontline-artifacts
+        - name: FIRESTORE_COLLECTION
+          value: cases
+        - name: GEMINI_MODEL
+          value: gemini-2.0-flash
+        resources:
+          limits:
+            cpu: 2
+            memory: 4Gi
+          requests:
+            cpu: 1
+            memory: 2Gi
+

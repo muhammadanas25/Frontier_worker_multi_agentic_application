@@ -1,0 +1,9 @@
+fastapi==0.115.0
+uvicorn[standard]==0.30.6
+google-adk
+google-cloud-firestore
+google-cloud-storage
+google-genai
+pydantic==2.5.0
+python-multipart==0.0.6
+requests==2.31.0

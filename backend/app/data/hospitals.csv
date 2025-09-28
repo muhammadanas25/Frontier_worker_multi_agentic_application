@@ -1,0 +1,7 @@
+name,address,lat,lon,phone,emergency_services
+City General Hospital,123 Main St,40.7128,-74.0060,555-0101,true
+Metro Medical Center,456 Oak Ave,40.7589,-73.9851,555-0102,true
+Community Health Clinic,789 Pine St,40.7505,-73.9934,555-0103,false
+Emergency Care Unit,321 Elm St,40.7282,-73.9942,555-0104,true
+Regional Hospital,654 Maple Dr,40.7614,-73.9776,555-0105,true
+

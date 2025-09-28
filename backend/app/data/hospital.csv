@@ -1,0 +1,10 @@
+name,address,phone,type,lat,lon,province,district
+Jinnah Postgraduate Medical Centre ER,"Rafiqui Shaheed Road, Karachi",+92-21-99201300,ER,24.8586,67.0489,Sindh,Karachi South
+Aga Khan University Hospital,"Stadium Rd, Karachi",+92-21-111911911,Hospital,24.8949,67.0723,Sindh,Karachi East
+Civil Hospital Karachi,"M.A. Jinnah Rd, Karachi",+92-21-99215740,Hospital,24.8615,67.0253,Sindh,Karachi South
+Mayo Hospital ER,"Nawaz Sharif Rd, Anarkali, Lahore",+92-42-99211100,ER,31.5714,74.3071,Punjab,Lahore
+Jinnah Hospital Lahore,"Usmani Rd, Lahore",+92-42-99231400,Hospital,31.4752,74.3023,Punjab,Lahore
+Services Hospital,"Shadman Rd, Jail Rd, Lahore",+92-42-99205517,Hospital,31.5207,74.3455,Punjab,Lahore
+PIMS ER (SZABMU),"G-8/3, Islamabad",+92-51-9261170,ER,33.7089,73.0548,Islamabad Capital Territory,Islamabad
+Pakistan Institute of Medical Sciences,"G-8/3, Islamabad",+92-51-9261170,Hospital,33.7095,73.0554,Islamabad Capital Territory,Islamabad
+Shifa International Hospital,"H-8/4, Islamabad",+92-51-8463000,Hospital,33.6933,73.0495,Islamabad Capital Territory,Islamabad
